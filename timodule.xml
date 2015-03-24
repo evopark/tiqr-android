@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- a project using this module will have these inserted into its own manifest -->
+<ti:module xmlns:ti="http://ti.appcelerator.org" xmlns:android="http://schemas.android.com/apk/res/android">
+  <android xmlns:android="http://schemas.android.com/apk/res/android">
+    <manifest>
+      <!-- android 4.0 and later, could work on earlier - try at your own peril ;) -->
+      <uses-sdk android:minSdkVersion="14"/>
+      <uses-permission android:name="android.permission.CAMERA" />
+      <uses-permission android:name="android.permission.FLASHLIGHT"/>
+      <uses-feature android:name="android.hardware.camera" />
+      <uses-feature android:name="android.hardware.camera.autofocus" />
+      <uses-feature android:name="android.hardware.camera.flash" />
+    </manifest>
+  </android>
+</ti:module>

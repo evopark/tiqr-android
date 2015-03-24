@@ -1,0 +1,15 @@
+# used by Titanium
+version: 1.0
+apiversion: 1
+description: Simple QR code reader for Android
+author: evopark GmbH <info@evopark.de>
+license: See LICENSE file
+copyright: Copyright 2015 evopark GmbH
+architectures: armeabi;armeabi-v7a;x86;x86_64
+
+# these should not be edited
+name: titaniumqr
+moduleid: com.acktie.mobile.android.qr
+guid: 667b1eff-9028-49d5-9e3b-2994daa82abd
+platform: android
+minsdk: 3.5.0.GA

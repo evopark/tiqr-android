@@ -1,0 +1,4 @@
+titanium.platform=!INSERT_TITANIUM_MOBILESDK_DIR_HERE!/android
+android.platform=!INSERT_ANDROID_SDK_DIR_HERE!/platforms/android-10/
+android.ndk=!INSERT_ANDROID_NDK_DIR_HERE!
+google.apis=!INSERT_ANDROID_SDK_DIR_HERE!/add-ons/addon-google_apis-google-10
