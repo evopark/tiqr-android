@@ -1,6 +1,6 @@
 <project name="titaniumqr" default="dist">
   <description>
-    Ant build script for Titanium Android module titaniumqr
+    Ant build script for Titanium Android module tiqr
   </description>
 
   <!-- override some Titanium defaults so they're more Maven-like -->
