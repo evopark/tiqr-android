@@ -141,19 +141,22 @@ public class CameraPreviewManager implements SurfaceHolder.Callback {
    */
   private Camera.Size chooseBestPreviewSize(List<Camera.Size> supported, int width, int height) {
     Camera.Size bestPreviewSize = null;
-
-    float bestRatio = Float.MAX_VALUE;
-    final float ratio = (float)width/(float)height;
-
     for (Camera.Size size : supported) {
-      final float currentRatio = (float)size.width/(float)size.height;
-      if (Math.abs(currentRatio - ratio) < bestRatio && size.width <= width && size.height <= height) {
-        bestRatio = Math.abs(currentRatio - ratio);
-        bestPreviewSize = size;
+      // only use preview sizes that are actually smaller than the surface we're painting on
+      if (size.width <= width && size.height <= height) {
+        if (bestPreviewSize == null) {
+          bestPreviewSize = size;
+        } else {
+          // then choose the largest of the remaining preview sizes
+          int resultArea = bestPreviewSize.width * bestPreviewSize.height;
+          int newArea = size.width * size.height;
+          if (newArea > resultArea) {
+            bestPreviewSize = size;
+          }
+        }
       }
     }
-    // if no optimal preview size was found, try reversing width and height
-    return bestPreviewSize != null ? bestPreviewSize : chooseBestPreviewSize(supported, height, width);
+    return bestPreviewSize;
   }
 
   /**
