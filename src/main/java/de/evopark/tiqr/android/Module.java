@@ -1,22 +1,26 @@
 package de.evopark.tiqr.android;
 
+import android.util.Log;
 import de.evopark.tiqr.android.interfaces.QrCodeResultHandler;
+import de.evopark.tiqr.android.processing.ZxingQrScanner;
 import org.appcelerator.kroll.KrollFunction;
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 
 /**
- * Entry point for the Titanium module
- *
+ * Entry point for the QR scanner Titanium module
+ * <p>
  * Licensed under the terms of the Apache Public License 2.0
  * Please see the LICENSE included with this distribution for details.
  */
 
-@Kroll.module(name="tiqr", id=ModuleInfo.MODULE_ID)
+@Kroll.module(name = ModuleInfo.MODULE_NAME, id = ModuleInfo.MODULE_ID)
 public class Module extends KrollModule {
 
-  private boolean isScanning = false;
+  private final static String LTAG = ModuleInfo.MODULE_NAME;
+  private boolean scanning = false;
   private KrollFunction onCodeReceived = null;
+  private ZxingQrScanner qrScanner = null;
 
   public Module() {
     super();
@@ -24,9 +28,11 @@ public class Module extends KrollModule {
 
   /**
    * Get the callback function that should be invoked on the JS-side when a code has been detected
+   *
    * @return function previously set via {setOnCodeReceived}
    */
-  @Kroll.getProperty
+  @Kroll.method
+  @Kroll.getProperty(name = "onCodeReceived")
   public KrollFunction getOnCodeReceived() {
     return onCodeReceived;
   }
@@ -34,56 +40,72 @@ public class Module extends KrollModule {
   /**
    * Set a function that should be invoked when a code has been detected
    * The function will receive the detected code as a string as its single argument
+   *
    * @param callback a KrollFunction that should be invoked when detecting codes
    */
-  @Kroll.setProperty
+  @Kroll.method
+  @Kroll.setProperty(name = "onCodeReceived")
   public void setOnCodeReceived(KrollFunction callback) {
     onCodeReceived = callback;
   }
 
   /**
    * Allows reading the "scanning" property from JavaScript
+   *
    * @return
    */
-  @Kroll.getProperty
-  public boolean getIsScanning() {
-    return isScanning;
+  @Kroll.method
+  @Kroll.getProperty(name = "scanning")
+  public boolean isScanning() {
+    return scanning;
   }
 
   /**
    * Start or stop scanning by setting the modules "scanning" property to true or false respectively
+   *
    * @param scanning whether the module should scan for codes
    */
-  @Kroll.setProperty()
-  public void setIsScanning(boolean scanning) {
-    if (scanning == isScanning) {
+  @Kroll.method
+  @Kroll.setProperty(name = "scanning")
+  public void setScanning(boolean scanning) {
+    if (scanning == this.scanning) {
       return;
     }
-    isScanning = scanning;
-    if (isScanning) {
+    this.scanning = scanning;
+    if (scanning) {
+      Log.d(LTAG, "Starting scanner");
       if (qrScanner == null) {
         qrScanner = new ZxingQrScanner(new QrCodeCallbackInvoker());
         CameraManager.getInstance().addPreviewDataProcessor(qrScanner);
       }
       CameraManager.getInstance().startCapture();
     } else {
+      Log.d(LTAG, "Stopping scanner");
       CameraManager.getInstance().stopCapture();
     }
   }
 
   /**
-   * When a QR code has been found, invokes a Kroll callback
+   * When a QR code has been found, invoke the Kroll callback
+   * Does not invoke the callback if the same code is found multiple times
    */
-  private class QrCodeCallbackInvoker extends QrCodeResultHandler {
+  private class QrCodeCallbackInvoker implements QrCodeResultHandler {
+
+    private String lastCode = null;
+
     @Override
     public void codeFound(String code) {
       if (onCodeReceived == null) {
         return;
       }
+      // ignore the code if it was just reported
+      if (code.equals(lastCode)) {
+        return;
+      }
+      lastCode = code;
+      Log.d(LTAG, "Invoking code reception handler");
       Object[] args = {code};
       onCodeReceived.callAsync(Module.this.getKrollObject(), args);
     }
   }
-
-  ZxingQrScanner qrScanner = null;
 }

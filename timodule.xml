@@ -6,10 +6,10 @@
       <!-- android 4.0 and later, could work on earlier - try at your own peril ;) -->
       <uses-sdk android:minSdkVersion="14"/>
       <uses-permission android:name="android.permission.CAMERA" />
-      <uses-permission android:name="android.permission.FLASHLIGHT"/>
+      <!-- uses-permission android:name="android.permission.FLASHLIGHT" /-->
       <uses-feature android:name="android.hardware.camera" />
       <uses-feature android:name="android.hardware.camera.autofocus" />
-      <uses-feature android:name="android.hardware.camera.flash" />
+      <!-- uses-feature android:name="android.hardware.camera.flash" /-->
     </manifest>
   </android>
 </ti:module>

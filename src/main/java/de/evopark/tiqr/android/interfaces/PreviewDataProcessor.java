@@ -4,9 +4,10 @@ import de.evopark.tiqr.android.CameraManager;
 
 /**
  * Interface for consumers who want to process data from the camera
+ *
  * @see CameraManager
  */
-public abstract class PreviewDataProcessor {
+public interface PreviewDataProcessor {
   /**
    * Will be invoked when new preview image data is available from the camera
    *
@@ -16,5 +17,5 @@ public abstract class PreviewDataProcessor {
    * @param data   image data buffer
    * @see android.graphics.ImageFormat
    */
-  public abstract void processBitmap(int width, int height, int format, byte[] data);
+  void processBitmap(int width, int height, int format, byte[] data);
 }

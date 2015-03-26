@@ -1,4 +1,4 @@
-<project name="titaniumqr" default="dist">
+<project name="tiqr" default="dist">
   <description>
     Ant build script for Titanium Android module tiqr
   </description>

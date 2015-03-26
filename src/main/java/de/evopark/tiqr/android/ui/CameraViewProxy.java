@@ -1,5 +1,6 @@
-package de.evopark.tiqr.android;
+package de.evopark.tiqr.android.ui;
 
+import de.evopark.tiqr.android.Module;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.titanium.proxy.TiViewProxy;
 import org.appcelerator.titanium.view.TiUIView;
@@ -9,11 +10,11 @@ import org.appcelerator.titanium.view.TiUIView;
  */
 @Kroll.proxy(creatableInModule = Module.class)
 public class CameraViewProxy extends TiViewProxy {
+
   @Override
   public TiUIView createView(android.app.Activity activity) {
     TiUIView view = new CameraView(this);
     return view;
   }
-
 
 }
